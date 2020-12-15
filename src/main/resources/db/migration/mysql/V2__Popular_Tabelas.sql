@@ -1,2 +1,2 @@
-INSERT INTO tabela (id, mensagem) VALUES (1, "Hello Word!!!");
+INSERT INTO model_table (id, message) VALUES (1, "Hello Word!!!");
   
