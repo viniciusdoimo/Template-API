@@ -15,6 +15,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RequestSaveTabelaDTO {
+public class RequestSaveTableDTO {
     String message;
 }

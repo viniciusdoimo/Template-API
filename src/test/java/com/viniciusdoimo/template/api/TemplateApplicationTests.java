@@ -1,4 +1,4 @@
-package com.viniciusdoimo.templateapi;
+package com.viniciusdoimo.template.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

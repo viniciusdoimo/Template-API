@@ -1,10 +1,7 @@
 package com.viniciusdoimo.template.api.DTO;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigInteger;
 
@@ -14,7 +11,8 @@ import java.math.BigInteger;
  * E-mail: vinicius.rodrigues.doimo@gmail.com
  *
  */
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

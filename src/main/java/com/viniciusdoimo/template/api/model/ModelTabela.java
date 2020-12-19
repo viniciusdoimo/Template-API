@@ -20,8 +20,8 @@ import java.math.BigInteger;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@javax.persistence.Table(name = "model_table")
-public class Table implements Serializable {
+@Table(name = "model_table")
+public class ModelTabela implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,11 +29,11 @@ public class Table implements Serializable {
 	@Column(name = "message", nullable = false)
 	private String message;
 
-	public Table(BigInteger id) {
+	public ModelTabela(BigInteger id) {
 		this.id = id;
 	}
 
-	public Table(String message) {
+	public ModelTabela(String message) {
 		this.message = message;
 	}
 }

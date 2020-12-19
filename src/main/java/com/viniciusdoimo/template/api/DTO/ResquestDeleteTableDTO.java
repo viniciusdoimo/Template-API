@@ -17,6 +17,6 @@ import java.math.BigInteger;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ResquestDeleteTabelaDTO {
+public class ResquestDeleteTableDTO {
     private BigInteger id;
 }
