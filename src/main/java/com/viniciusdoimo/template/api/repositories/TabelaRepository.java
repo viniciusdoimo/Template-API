@@ -1,6 +1,6 @@
 package com.viniciusdoimo.template.api.repositories;
 
-import com.viniciusdoimo.template.api.model.ModelTabela;
+import com.viniciusdoimo.template.api.model.Tabela;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,12 +16,12 @@ import java.math.BigInteger;
  *
  */
 @Transactional(readOnly = false)
-public interface TableRepository extends JpaRepository<ModelTabela, Long> {
+public interface TabelaRepository extends JpaRepository<Tabela, Long> {
 	
 	@Transactional(readOnly = true)
-    ModelTabela findById(BigInteger id);
+    Tabela findById(BigInteger id);
 
     @Modifying(flushAutomatically = true)
-    @Query("UPDATE ModelTabela t SET t.message = :message WHERE t.id = :id ")
+    @Query("UPDATE Tabela t SET t.message = :message WHERE t.id = :id ")
     public int update(@Param("id") BigInteger id, @Param("message") String message);
 }

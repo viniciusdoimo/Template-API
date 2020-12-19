@@ -11,12 +11,13 @@ import java.math.BigInteger;
  * E-mail: vinicius.rodrigues.doimo@gmail.com
  *
  */
+@Data
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ResquestUpdateDTO {
+public class ResquestUpdateTabelaDTO {
     private BigInteger id;
     private String message;
 }

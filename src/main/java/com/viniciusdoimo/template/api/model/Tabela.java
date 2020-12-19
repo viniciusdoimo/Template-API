@@ -1,9 +1,6 @@
 package com.viniciusdoimo.template.api.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,11 +14,12 @@ import java.math.BigInteger;
  */
 @Setter
 @Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "model_table")
-public class ModelTabela implements Serializable {
+public class Tabela implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,11 +27,11 @@ public class ModelTabela implements Serializable {
 	@Column(name = "message", nullable = false)
 	private String message;
 
-	public ModelTabela(BigInteger id) {
+	public Tabela(BigInteger id) {
 		this.id = id;
 	}
 
-	public ModelTabela(String message) {
+	public Tabela(String message) {
 		this.message = message;
 	}
 }

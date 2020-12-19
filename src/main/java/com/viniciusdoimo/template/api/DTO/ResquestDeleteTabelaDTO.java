@@ -1,9 +1,8 @@
 package com.viniciusdoimo.template.api.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.math.BigInteger;
 
 /**
  *
@@ -12,9 +11,11 @@ import lombok.NoArgsConstructor;
  *
  */
 @Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RequestSaveTableDTO {
-    String message;
+public class ResquestDeleteTabelaDTO {
+    private BigInteger id;
 }
