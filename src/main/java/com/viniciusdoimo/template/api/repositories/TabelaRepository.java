@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
+import java.util.Optional;
 
 /**
  *
@@ -18,8 +19,8 @@ import java.math.BigInteger;
 @Transactional(readOnly = false)
 public interface TabelaRepository extends JpaRepository<Tabela, Long> {
 	
-	@Transactional(readOnly = true)
-    Tabela findById(BigInteger id);
+//	@Transactional(readOnly = true)
+    Optional<Tabela> findById(BigInteger id);
 
     @Modifying(flushAutomatically = true)
     @Query("UPDATE Tabela t SET t.message = :message WHERE t.id = :id ")

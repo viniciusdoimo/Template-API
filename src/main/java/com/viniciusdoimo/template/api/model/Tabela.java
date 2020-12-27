@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Objects;
 
 /**
  *
@@ -33,5 +34,25 @@ public class Tabela implements Serializable {
 
 	public Tabela(String message) {
 		this.message = message;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Tabela tabela = (Tabela) o;
+		return Objects.equals(id, tabela.id) && Objects.equals(message, tabela.message);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, message);
+	}
+
+	@Override
+	public String toString() {
+		return "Tabela { " +
+				"id=" + id +
+				", message='" + message + '\'' + " } ";
 	}
 }
