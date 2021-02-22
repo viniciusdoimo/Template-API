@@ -7,7 +7,12 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
+/**
+ *
+ * Vinicius Doimo
+ * E-mail: vinicius.rodrigues.doimo@gmail.com
+ *
+ */
 @SpringBootTest
 @ActiveProfiles("test")
 public class helloWorldTest {
