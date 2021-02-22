@@ -36,7 +36,7 @@ public class User extends GenericModel {
 	@Column(name = "cpf", length = 15, nullable = false)
 	private String cpf;
 
-	@Column(name = "password", length = 15, nullable = false)
+	@Column(name = "password", nullable = false)
 	private String password;
 
 	@Temporal(TemporalType.TIMESTAMP)

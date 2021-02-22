@@ -57,7 +57,8 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.data.name").value(NAME))
                 .andExpect(jsonPath("$.data.surname").value(SURNAME))
                 .andExpect(jsonPath("$.data.email").value(EMAIL))
-                .andExpect(jsonPath("$.data.cpf").value(CPF));
+                .andExpect(jsonPath("$.data.cpf").value(CPF))
+                .andExpect(jsonPath("$.data.password").doesNotExist());
     }
 
     @Test
@@ -67,7 +68,7 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errors.message").value("E-mail invalido"));
+                .andExpect(jsonPath("$.errors.[*].message").value("email: must be a well-formed email address"));
     }
 
     private User getMockUser(){

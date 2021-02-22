@@ -2,6 +2,7 @@ package com.viniciusdoimo.template.api.dto.request;
 
 import com.sun.xml.internal.ws.developer.SchemaValidation;
 import com.viniciusdoimo.template.api.model.User;
+import com.viniciusdoimo.template.api.utils.PasswordUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -43,6 +44,6 @@ public class RequestCreateUserDTO {
     private String password;
 
     public User parseUser() {
-        return new User(getName(), getSurname(), getEmail(), getCpf(), getPassword(), new Date(), new Date());
+        return new User(getName(), getSurname(), getEmail(), getCpf(), PasswordUtils.generateBCrypt(getPassword()), new Date(), new Date());
     }
 }
