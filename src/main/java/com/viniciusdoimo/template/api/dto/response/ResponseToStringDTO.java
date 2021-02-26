@@ -11,6 +11,6 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class ResponseDeleteUserDTO {
+public class ResponseToStringDTO {
     private String answer;
 }

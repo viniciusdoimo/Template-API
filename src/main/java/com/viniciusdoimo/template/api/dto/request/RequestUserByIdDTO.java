@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
  *
  */
 @Data
-public class RequestDeleteUserDTO {
+public class RequestUserByIdDTO {
 
     @NotNull()
     private Long id;

@@ -2,6 +2,7 @@ package com.viniciusdoimo.template.api.Repository;
 
 import com.viniciusdoimo.template.api.model.User;
 import com.viniciusdoimo.template.api.repositories.UserRepository;
+import com.viniciusdoimo.template.api.utils.PasswordUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,7 @@ public class UserRepositoryTest {
                 "Doimo",
                 "vinicius.rodrigues.doimo@gmail.com",
                 "123.456.789-10",
-                "12345678",
+                PasswordUtils.generateBCrypt("12345678"),
                 new Date(),
                 new Date()
         );

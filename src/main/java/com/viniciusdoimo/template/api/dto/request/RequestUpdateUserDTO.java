@@ -2,8 +2,10 @@ package com.viniciusdoimo.template.api.dto.request;
 
 
 import com.viniciusdoimo.template.api.model.User;
+import com.viniciusdoimo.template.api.utils.PasswordUtils;
 import lombok.Data;
 
+import javax.persistence.Basic;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -20,34 +22,29 @@ public class RequestUpdateUserDTO {
     @NotNull()
     private Long id;
 
-    @NotNull()
     @Size(min =3, max=30)
     private String name;
 
-    @NotNull()
     @Size(min =3, max=30)
     private String surname;
 
-    @NotNull()
     @Email()
     private String email;
 
-    @NotNull()
     @Size(min =14, max=14)
     private String cpf;
 
-    @NotNull()
     @Size(min =8, max=16)
     private String password;
 
     public User parseUser(User user) {
         return new User(
                 this.id,
-                user.getName() == null ? user.getName(): this.name ,
-                user.getSurname() == null ? user.getSurname(): this.surname ,
-                user.getEmail() == null ? user.getEmail() : this.email,
-                user.getCpf() == null ? user.getCpf() : this.cpf,
-                user.getPassword() == null ? user.getPassword() : this.password,
+                this.getName() == null ? user.getName():  this.getName(),
+                this.getSurname() == null ? user.getSurname(): this.getSurname() ,
+                this.getEmail() == null ? user.getEmail() : this.getEmail(),
+                this.getCpf() == null ? user.getCpf() : this.getCpf(),
+                PasswordUtils.generateBCrypt(this.getPassword() == null ? user.getPassword() : this.getPassword()),
                 user.getCreationDate(),
                 new Date()
         );

@@ -1,5 +1,6 @@
 package com.viniciusdoimo.template.api.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.viniciusdoimo.template.api.model.User;
 import com.viniciusdoimo.template.api.utils.DateUtils;
 import lombok.Data;
@@ -11,7 +12,8 @@ import lombok.Data;
  *
  */
 @Data
-public class ResponseUpdateUserDTO {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ResponseUserDTO {
     private Long id;
     private String name;
     private String surname;
@@ -20,7 +22,7 @@ public class ResponseUpdateUserDTO {
     private String creationDate;
     private String updateDate;
 
-    public ResponseUpdateUserDTO(User user) {
+    public ResponseUserDTO(User user) {
         this.id = user.getId();
         this.name = user.getName();
         this.surname = user.getSurname();
@@ -29,5 +31,4 @@ public class ResponseUpdateUserDTO {
         this.creationDate = DateUtils.formatDateToString(DateUtils.FORMAT_DATE_AND_TIME, user.getCreationDate());
         this.updateDate = DateUtils.formatDateToString(DateUtils.FORMAT_DATE_AND_TIME, user.getUpdateDate());
     }
-
 }

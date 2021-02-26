@@ -3,7 +3,7 @@ package com.viniciusdoimo.template.api.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.viniciusdoimo.template.api.dto.request.RequestCreateUserDTO;
-import com.viniciusdoimo.template.api.dto.response.ResponseCreateUserDTO;
+import com.viniciusdoimo.template.api.dto.response.ResponseUserDTO;
 import com.viniciusdoimo.template.api.model.User;
 import com.viniciusdoimo.template.api.response.Response;
 import com.viniciusdoimo.template.api.service.UserService;
@@ -48,8 +48,8 @@ public class UserControllerTest {
     MockMvc mvc;
 
     @Test
-    public void testSave() throws Exception {
-        BDDMockito.given(service.createUser(Mockito.any(RequestCreateUserDTO.class))).willReturn(getMockResponse());
+    public void testCreateUser() throws Exception {
+        BDDMockito.given(service.createUser(Mockito.any(RequestCreateUserDTO.class))).willReturn(getResponseCreateUserDTO());
         mvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(NAME, SURNAME, EMAIL, CPF, PASSWORD))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -57,19 +57,45 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.data.name").value(NAME))
                 .andExpect(jsonPath("$.data.surname").value(SURNAME))
                 .andExpect(jsonPath("$.data.email").value(EMAIL))
-                .andExpect(jsonPath("$.data.cpf").value(CPF))
-                .andExpect(jsonPath("$.data.password").doesNotExist());
+                .andExpect(jsonPath("$.data.cpf").value(CPF));
     }
 
     @Test
-    public void testSaveInvalidUser() throws Exception {
-        BDDMockito.given(service.createUser(Mockito.any(RequestCreateUserDTO.class))).willReturn(getMockResponse());
-        mvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(NAME, SURNAME, "email", CPF, PASSWORD))
+    public void tetsCreateUserInvalid() throws Exception {
+        BDDMockito.given(service.createUser(Mockito.any(RequestCreateUserDTO.class))).willReturn(getResponseCreateUserDTO());
+        mvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(NAME, SURNAME, null, CPF, PASSWORD))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errors.[*].message").value("email: must be a well-formed email address"));
+                .andExpect(jsonPath("$.errors.[*].message").value("email: must not be null"));
     }
+
+    //--------------------------------------------------------------------------
+
+//    @Test
+//    public void testReadUser() throws Exception {
+//        BDDMockito.given(service.createUser(Mockito.any(RequestReadUserDTO.class))).willReturn(getResponseCreateUserDTO());
+//        mvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(NAME, SURNAME, EMAIL, CPF, PASSWORD))
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isCreated())
+//                .andExpect(jsonPath("$.data.name").value(NAME))
+//                .andExpect(jsonPath("$.data.surname").value(SURNAME))
+//                .andExpect(jsonPath("$.data.email").value(EMAIL))
+//                .andExpect(jsonPath("$.data.cpf").value(CPF));
+//    }
+//
+//    @Test
+//    public void testReadUserInvalid() throws Exception {
+//        BDDMockito.given(service.createUser(Mockito.any(RequestCreateUserDTO.class))).willReturn(getMockResponse());
+//        mvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(NAME, SURNAME, null, CPF, PASSWORD))
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isBadRequest())
+//                .andExpect(jsonPath("$.errors.[*].message").value("email: must not be null"));
+//    }
+
+    //------------------------------------------------------------------------------------------
 
     private User getMockUser(){
         return  new User(
@@ -83,11 +109,17 @@ public class UserControllerTest {
         );
     }
 
-    private Response<ResponseCreateUserDTO> getMockResponse(){
-        Response<ResponseCreateUserDTO> response = new Response<>();
-        response.setData(new ResponseCreateUserDTO(getMockUser()));
+    private Response<ResponseUserDTO> getResponseCreateUserDTO(){
+        Response<ResponseUserDTO> response = new Response<>();
+        response.setData(new ResponseUserDTO(getMockUser()));
         return response;
     }
+
+//    private Response<ResponseReadUserDTO> getMockResponse(){
+//        Response<ResponseReadUserDTO> response = new Response<>();
+//        response.setData(new ResponseReadUserDTO(1L));
+//        return response;
+//    }
 
     private RequestCreateUserDTO getMockRequestCreateUserDTO(){
         return  new RequestCreateUserDTO(
@@ -111,15 +143,4 @@ public class UserControllerTest {
         }
         return jsonRequest;
     }
-
-//    private RequestSaveUserDTO getMockTabela(){
-//        return new RequestSaveUserDTO(
-//                "Vinicius",
-//                "Doimo",
-//                "vinicius.rodrigues.doimo@gmail.com",
-//                "123.456.789-10",
-//                "12345678"
-//        );
-//    }
-
 }

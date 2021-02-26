@@ -11,17 +11,16 @@ public class PasswordUtils {
 	public PasswordUtils() {
 	}
 
-	/**
-	 * Generates a hash using BCrypt.
-	 * 
-	 * @param password
-	 * @return String
-	 */
 	public static String generateBCrypt(String password) {
 		if (password == null) {
 			return password;
 		}
 		BCryptPasswordEncoder bCryptEncoder = new BCryptPasswordEncoder();
 		return bCryptEncoder.encode(password);
+	}
+
+	public static boolean validatePassword(String password, String passwordEncoded){
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+		return bCryptPasswordEncoder.matches(password, passwordEncoded);
 	}
 }

@@ -2,13 +2,10 @@ package com.viniciusdoimo.template.api.service;
 
 import com.viniciusdoimo.template.api.dao.UserDAO;
 import com.viniciusdoimo.template.api.dto.request.RequestCreateUserDTO;
-import com.viniciusdoimo.template.api.dto.request.RequestDeleteUserDTO;
-import com.viniciusdoimo.template.api.dto.request.RequestReadUserDTO;
+import com.viniciusdoimo.template.api.dto.request.RequestUserByIdDTO;
 import com.viniciusdoimo.template.api.dto.request.RequestUpdateUserDTO;
-import com.viniciusdoimo.template.api.dto.response.ResponseCreateUserDTO;
-import com.viniciusdoimo.template.api.dto.response.ResponseDeleteUserDTO;
-import com.viniciusdoimo.template.api.dto.response.ResponseReadUserDTO;
-import com.viniciusdoimo.template.api.dto.response.ResponseUpdateUserDTO;
+import com.viniciusdoimo.template.api.dto.response.ResponseUserDTO;
+import com.viniciusdoimo.template.api.dto.response.ResponseToStringDTO;
 import com.viniciusdoimo.template.api.model.User;
 import com.viniciusdoimo.template.api.repositories.UserRepository;
 import com.viniciusdoimo.template.api.response.Response;
@@ -29,32 +26,32 @@ public class UserService {
 	@Autowired
 	private UserDAO userDAO;
 
-	public Response<ResponseCreateUserDTO> createUser(RequestCreateUserDTO request){
-		Response<ResponseCreateUserDTO> response = new Response<>();
+	public Response<ResponseUserDTO> createUser(RequestCreateUserDTO request){
+		Response<ResponseUserDTO> response = new Response<>();
 		User user = request.parseUser();
-		response.setData(new ResponseCreateUserDTO(userDAO.create(user)));
+		response.setData(new ResponseUserDTO(userDAO.create(user)));
 		return response;
 	}
 
-	public Response<ResponseReadUserDTO> findById(RequestReadUserDTO request) throws Exception {
-		Response<ResponseReadUserDTO> response = new Response<>();
-		response.setData(new ResponseReadUserDTO(userDAO.findById(request.getId())));
+	public Response<ResponseUserDTO> findById(RequestUserByIdDTO request) throws Exception {
+		Response<ResponseUserDTO> response = new Response<>();
+		response.setData(new ResponseUserDTO(userDAO.findById(request.getId())));
 		return response;
 	}
 
-	public Response<ResponseUpdateUserDTO> updateUser(RequestUpdateUserDTO request) throws Exception {
-		Response<ResponseUpdateUserDTO> response = new Response<>();
+	public Response<ResponseToStringDTO> updateUser(RequestUpdateUserDTO request) throws Exception {
+		Response<ResponseToStringDTO> response = new Response<>();
 		User user = request.parseUser(userDAO.findById(request.getId()));
 		userDAO.update(user);
-		response.setData(new ResponseUpdateUserDTO(user));
+		response.setData(new ResponseToStringDTO("User update successful"));
 		return response;
 	}
 
-	public Response<ResponseDeleteUserDTO> deleteUser(RequestDeleteUserDTO request) throws Exception {
-		Response<ResponseDeleteUserDTO> response = new Response<>();
+	public Response<ResponseToStringDTO> deleteUser(RequestUserByIdDTO request) throws Exception {
+		Response<ResponseToStringDTO> response = new Response<>();
 		User user = userDAO.findById(request.getId());
 		userDAO.delete(user);
-		response.setData(new ResponseDeleteUserDTO("Successful user deletion"));
+		response.setData(new ResponseToStringDTO("Successful user deletion"));
 		return response;
 	}
 }
