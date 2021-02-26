@@ -1,5 +1,6 @@
 package com.viniciusdoimo.template.api.utils.enums;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -10,7 +11,7 @@ import java.util.Arrays;
  * E-mail: vinicius.rodrigues.doimo@gmail.com
  *
  */
-@Getter
+//@Getter(AccessLevel.PUBLIC)
 public enum EnumTypeError {
     ERROR("ERROR"),
     CONSULTATION_WITHOUT_RETURN("CONSULTATION WITHOUT RETURN"),
@@ -21,6 +22,10 @@ public enum EnumTypeError {
 
     EnumTypeError(String typeItem) {
         this.typeItem = typeItem;
+    }
+
+    public String getTypeItem() {
+        return typeItem;
     }
 
     public static EnumTypeError find(String typeItem) {

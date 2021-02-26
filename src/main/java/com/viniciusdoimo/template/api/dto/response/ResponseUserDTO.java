@@ -23,7 +23,7 @@ public class ResponseUserDTO {
     private String updateDate;
 
     public ResponseUserDTO(User user) {
-        this.id = user.getId();
+//        this.id = user.getId() != null ? user.getId() : null;
         this.name = user.getName();
         this.surname = user.getSurname();
         this.email = user.getEmail();

@@ -30,7 +30,7 @@ public class ResourceExceptionHandle {
         Response<String> response = new Response<>();
         response.setData("");
         exception.getBindingResult().getFieldErrors().forEach(e ->
-                response.addError(EnumTypeError.FIELD_INVALID, e.getField() + ": " + e.getDefaultMessage()));
+                response.addError(EnumTypeError.ERROR, e.getField() + ": " + e.getDefaultMessage()));
         return ResponseEntity.badRequest().body(response);
     }
 

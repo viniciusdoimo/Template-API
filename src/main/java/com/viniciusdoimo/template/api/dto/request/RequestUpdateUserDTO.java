@@ -5,7 +5,6 @@ import com.viniciusdoimo.template.api.model.User;
 import com.viniciusdoimo.template.api.utils.PasswordUtils;
 import lombok.Data;
 
-import javax.persistence.Basic;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

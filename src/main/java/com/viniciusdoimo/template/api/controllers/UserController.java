@@ -1,10 +1,10 @@
 package com.viniciusdoimo.template.api.controllers;
 
 import com.viniciusdoimo.template.api.dto.request.RequestCreateUserDTO;
-import com.viniciusdoimo.template.api.dto.request.RequestUserByIdDTO;
 import com.viniciusdoimo.template.api.dto.request.RequestUpdateUserDTO;
-import com.viniciusdoimo.template.api.dto.response.ResponseUserDTO;
+import com.viniciusdoimo.template.api.dto.request.RequestUserByIdDTO;
 import com.viniciusdoimo.template.api.dto.response.ResponseToStringDTO;
+import com.viniciusdoimo.template.api.dto.response.ResponseUserDTO;
 import com.viniciusdoimo.template.api.response.Response;
 import com.viniciusdoimo.template.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -32,7 +32,7 @@ public class RequestCreateUserDTO {
     private String surname;
 
     @NotNull()
-    @Email()
+    @Email(message = "teste")
     private String email;
 
     @NotNull()

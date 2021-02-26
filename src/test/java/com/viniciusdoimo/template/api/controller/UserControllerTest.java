@@ -7,6 +7,7 @@ import com.viniciusdoimo.template.api.dto.response.ResponseUserDTO;
 import com.viniciusdoimo.template.api.model.User;
 import com.viniciusdoimo.template.api.response.Response;
 import com.viniciusdoimo.template.api.service.UserService;
+import com.viniciusdoimo.template.api.utils.PasswordUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Date;
@@ -63,11 +65,13 @@ public class UserControllerTest {
     @Test
     public void tetsCreateUserInvalid() throws Exception {
         BDDMockito.given(service.createUser(Mockito.any(RequestCreateUserDTO.class))).willReturn(getResponseCreateUserDTO());
-        mvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(NAME, SURNAME, null, CPF, PASSWORD))
+        ResultActions a = mvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload("vin", SURNAME, "email", CPF, PASSWORD))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors.[*].message").value("email: must ot be null"))
                 .andExpect(jsonPath("$.errors.[*].message").value("email: must not be null"));
+        System.out.println();
     }
 
     //--------------------------------------------------------------------------
@@ -103,7 +107,7 @@ public class UserControllerTest {
                 "Doimo",
                 "vinicius.rodrigues.doimo@gmail.com",
                 "123.456.789-10",
-                "12345678",
+                PasswordUtils.generateBCrypt("12345678"),
                 new Date(),
                 new Date()
         );
@@ -122,13 +126,14 @@ public class UserControllerTest {
 //    }
 
     private RequestCreateUserDTO getMockRequestCreateUserDTO(){
-        return  new RequestCreateUserDTO(
+        return new RequestCreateUserDTO(
                 "Vinicius",
                 "Doimo",
                 "vinicius.rodrigues.doimo@gmail.com",
                 "123.456.789-10",
                 "12345678"
         );
+
     }
 
     public String getJsonPayload(String name, String surname, String email, String cpf, String password){

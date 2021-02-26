@@ -1,6 +1,7 @@
 package com.viniciusdoimo.template.api.dto.request;
 
 import lombok.Data;
+import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
  * E-mail: vinicius.rodrigues.doimo@gmail.com
  *
  */
+@Getter
 @Data
 public class RequestUserByIdDTO {
 
