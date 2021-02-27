@@ -36,21 +36,21 @@ public class UserController {
 
 	@GetMapping
 	public ResponseEntity<Response<ResponseUserDTO>> readUserController(@Valid @RequestBody RequestUserByIdDTO request) throws Exception {
-		Response<ResponseUserDTO> response = new Response<>();
+		Response<ResponseUserDTO> response;
 			response = service.findById(request);
 			return ResponseEntity.ok(response);
 	}
 
 	@PutMapping
 	public ResponseEntity<Response<ResponseToStringDTO>> updateUserController(@Valid @RequestBody RequestUpdateUserDTO request) throws Exception {
-		Response<ResponseToStringDTO> response = new Response<>();
+		Response<ResponseToStringDTO> response;
 			response = service.updateUser(request);
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	@DeleteMapping
 	public ResponseEntity<Response<ResponseToStringDTO>> deleteUserController(@Valid @RequestBody RequestUserByIdDTO request) throws Exception {
-		Response<ResponseToStringDTO> response = new Response<>();
+		Response<ResponseToStringDTO> response;
 			response = service.deleteUser(request);
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 	}

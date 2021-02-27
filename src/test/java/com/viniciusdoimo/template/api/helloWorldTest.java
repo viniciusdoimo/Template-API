@@ -20,6 +20,5 @@ public class helloWorldTest {
     @Test
     public void testHelloWord(){
         assertEquals(1,1);
-
     }
 }

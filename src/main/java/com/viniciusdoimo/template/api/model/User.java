@@ -11,8 +11,6 @@ import java.util.Date;
  * E-mail: vinicius.rodrigues.doimo@gmail.com
  *
  */
-@Setter
-@Getter
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

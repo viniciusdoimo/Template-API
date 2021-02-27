@@ -3,6 +3,7 @@ package com.viniciusdoimo.template.api.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.viniciusdoimo.template.api.dto.request.RequestCreateUserDTO;
+import com.viniciusdoimo.template.api.dto.request.RequestUserByIdDTO;
 import com.viniciusdoimo.template.api.dto.response.ResponseUserDTO;
 import com.viniciusdoimo.template.api.model.User;
 import com.viniciusdoimo.template.api.response.Response;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Date;
@@ -25,10 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- *
  * Vinicius Doimo
  * E-mail: vinicius.rodrigues.doimo@gmail.com
- *
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -49,8 +49,9 @@ public class UserControllerTest {
 
     @Test
     public void testCreateUser() throws Exception {
-        BDDMockito.given(service.createUser(Mockito.any(RequestCreateUserDTO.class))).willReturn(getResponseCreateUserDTO());
-        mvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(NAME, SURNAME, EMAIL, CPF, PASSWORD))
+        BDDMockito.given(service.createUser(Mockito.any(RequestCreateUserDTO.class))).willReturn(getResponseUserDTO());
+        mvc.perform(MockMvcRequestBuilders.post(URL)
+                .content(getJsonPayload(new RequestCreateUserDTO(NAME, SURNAME, EMAIL, CPF, PASSWORD)))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -62,85 +63,64 @@ public class UserControllerTest {
 
     @Test
     public void tetsCreateUserInvalid() throws Exception {
-        BDDMockito.given(service.createUser(Mockito.any(RequestCreateUserDTO.class))).willReturn(getResponseCreateUserDTO());
-        mvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(NAME, SURNAME, null, CPF, PASSWORD))
+        BDDMockito.given(service.createUser(Mockito.any(RequestCreateUserDTO.class))).willReturn(getResponseUserDTO());
+        mvc.perform(MockMvcRequestBuilders.post(URL)
+                .content(getJsonPayload(new RequestCreateUserDTO(NAME, SURNAME, "email", CPF, PASSWORD)))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errors.[*].message").value("email: must not be null"));
+                .andExpect(jsonPath("$.errors[0].message").value("email: must be a well-formed email address"));
     }
 
-    //--------------------------------------------------------------------------
-
-//    @Test
-//    public void testReadUser() throws Exception {
-//        BDDMockito.given(service.createUser(Mockito.any(RequestReadUserDTO.class))).willReturn(getResponseCreateUserDTO());
-//        mvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(NAME, SURNAME, EMAIL, CPF, PASSWORD))
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isCreated())
-//                .andExpect(jsonPath("$.data.name").value(NAME))
-//                .andExpect(jsonPath("$.data.surname").value(SURNAME))
-//                .andExpect(jsonPath("$.data.email").value(EMAIL))
-//                .andExpect(jsonPath("$.data.cpf").value(CPF));
-//    }
-//
-//    @Test
-//    public void testReadUserInvalid() throws Exception {
-//        BDDMockito.given(service.createUser(Mockito.any(RequestCreateUserDTO.class))).willReturn(getMockResponse());
-//        mvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(NAME, SURNAME, null, CPF, PASSWORD))
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("$.errors.[*].message").value("email: must not be null"));
-//    }
-
-    //------------------------------------------------------------------------------------------
-
-    private User getMockUser(){
-        return  new User(
-                "Vinicius",
-                "Doimo",
-                "vinicius.rodrigues.doimo@gmail.com",
-                "123.456.789-10",
-                "12345678",
-                new Date(),
-                new Date()
-        );
+    @Test
+    public void testReadUser() throws Exception {
+        BDDMockito.given(service.findById(Mockito.any(RequestUserByIdDTO.class))).willReturn(getResponseUserDTO());
+        mvc.perform(MockMvcRequestBuilders.get(URL)
+                .content(getJsonPayload(new RequestUserByIdDTO(1L)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.name").value(NAME))
+                .andExpect(jsonPath("$.data.surname").value(SURNAME))
+                .andExpect(jsonPath("$.data.email").value(EMAIL))
+                .andExpect(jsonPath("$.data.cpf").value(CPF));
     }
 
-    private Response<ResponseUserDTO> getResponseCreateUserDTO(){
+    @Test
+    public void testReadUserInvalid() throws Exception {
+        BDDMockito.given(service.findById(Mockito.any(RequestUserByIdDTO.class))).willReturn(getResponseUserDTO());
+        mvc.perform(MockMvcRequestBuilders.get(URL)
+                .content(getJsonPayload(new RequestUserByIdDTO()))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors[0].message").value("id: must not be null"));
+    }
+
+    private Response<ResponseUserDTO> getResponseUserDTO() {
         Response<ResponseUserDTO> response = new Response<>();
-        response.setData(new ResponseUserDTO(getMockUser()));
+        response.setData(
+                new ResponseUserDTO(
+                        new User(
+                                NAME,
+                                SURNAME,
+                                EMAIL,
+                                CPF,
+                                PASSWORD,
+                                new Date(),
+                                new Date()
+                        )
+                )
+        );
         return response;
     }
 
-//    private Response<ResponseReadUserDTO> getMockResponse(){
-//        Response<ResponseReadUserDTO> response = new Response<>();
-//        response.setData(new ResponseReadUserDTO(1L));
-//        return response;
-//    }
-
-    private RequestCreateUserDTO getMockRequestCreateUserDTO(){
-        return  new RequestCreateUserDTO(
-                "Vinicius",
-                "Doimo",
-                "vinicius.rodrigues.doimo@gmail.com",
-                "123.456.789-10",
-                "12345678"
-        );
-    }
-
-    public String getJsonPayload(String name, String surname, String email, String cpf, String password){
-        RequestCreateUserDTO request = new RequestCreateUserDTO(name, surname, email, cpf, password);
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonRequest = null;
-
+    public String getJsonPayload(Object request) {
         try {
-            jsonRequest = mapper.writeValueAsString(request);
+            return new ObjectMapper().writeValueAsString(request);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return jsonRequest;
+        return null;
     }
 }
