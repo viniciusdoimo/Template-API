@@ -3,7 +3,9 @@ package com.viniciusdoimo.template.api.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.viniciusdoimo.template.api.dto.request.RequestCreateUserDTO;
+import com.viniciusdoimo.template.api.dto.request.RequestUpdateUserDTO;
 import com.viniciusdoimo.template.api.dto.request.RequestUserByIdDTO;
+import com.viniciusdoimo.template.api.dto.response.ResponseToStringDTO;
 import com.viniciusdoimo.template.api.dto.response.ResponseUserDTO;
 import com.viniciusdoimo.template.api.model.User;
 import com.viniciusdoimo.template.api.response.Response;
@@ -18,7 +20,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Date;
@@ -35,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 public class UserControllerTest {
     private static final String URL = "/user";
+    private static final Long ID = 1L;
     private static final String NAME = "Vinicius";
     private static final String SURNAME = "Doimo";
     private static final String EMAIL = "vinicius.rodrigues.doimo@gmail.com";
@@ -76,7 +78,7 @@ public class UserControllerTest {
     public void testReadUser() throws Exception {
         BDDMockito.given(service.findById(Mockito.any(RequestUserByIdDTO.class))).willReturn(getResponseUserDTO());
         mvc.perform(MockMvcRequestBuilders.get(URL)
-                .content(getJsonPayload(new RequestUserByIdDTO(1L)))
+                .content(getJsonPayload(new RequestUserByIdDTO(ID)))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -90,6 +92,63 @@ public class UserControllerTest {
     public void testReadUserInvalid() throws Exception {
         BDDMockito.given(service.findById(Mockito.any(RequestUserByIdDTO.class))).willReturn(getResponseUserDTO());
         mvc.perform(MockMvcRequestBuilders.get(URL)
+                .content(getJsonPayload(new RequestUserByIdDTO()))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors[0].message").value("id: must not be null"));
+    }
+
+    @Test
+    public void testUpdateUser() throws Exception {
+        BDDMockito.given(service.updateUser(Mockito.any(RequestUpdateUserDTO.class)))
+                .willReturn(getResponseToStringDTO("User update successful"));
+
+        RequestUpdateUserDTO request = new RequestUpdateUserDTO();
+        request.setId(ID);
+        request.setSurname("Rodrigues Doimo");
+
+        mvc.perform(MockMvcRequestBuilders.put(URL)
+                .content(getJsonPayload(request))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.answer").value("User update successful"));
+    }
+
+    @Test
+    public void testUpdateUserInvalid() throws Exception {
+        BDDMockito.given(service.updateUser(Mockito.any(RequestUpdateUserDTO.class)))
+                .willReturn(getResponseToStringDTO("User update successful"));
+
+        RequestUpdateUserDTO request = new RequestUpdateUserDTO();
+        request.setSurname("Rodrigues Doimo");
+
+        mvc.perform(MockMvcRequestBuilders.put(URL)
+                .content(getJsonPayload(request))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors[0].message").value("id: must not be null"));
+    }
+
+    @Test
+    public void testDeleteUse() throws Exception {
+        BDDMockito.given(service.deleteUser(Mockito.any(RequestUserByIdDTO.class)))
+                .willReturn(getResponseToStringDTO("Successful user deletion"));
+        mvc.perform(MockMvcRequestBuilders.delete(URL)
+                .content(getJsonPayload(new RequestUserByIdDTO(ID)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.answer").value("Successful user deletion"));
+    }
+
+    @Test
+    public void testDeleteUseInvalid() throws Exception {
+        BDDMockito.given(service.deleteUser(Mockito.any(RequestUserByIdDTO.class)))
+                .willReturn(getResponseToStringDTO("Successful user deletion"));
+        mvc.perform(MockMvcRequestBuilders.delete(URL)
                 .content(getJsonPayload(new RequestUserByIdDTO()))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -112,6 +171,12 @@ public class UserControllerTest {
                         )
                 )
         );
+        return response;
+    }
+
+    private Response<ResponseToStringDTO> getResponseToStringDTO(String answer) {
+        Response<ResponseToStringDTO> response = new Response<>();
+        response.setData(new ResponseToStringDTO(answer));
         return response;
     }
 

@@ -2,10 +2,10 @@ package com.viniciusdoimo.template.api.service;
 
 import com.viniciusdoimo.template.api.dao.UserDAO;
 import com.viniciusdoimo.template.api.dto.request.RequestCreateUserDTO;
-import com.viniciusdoimo.template.api.dto.request.RequestUserByIdDTO;
 import com.viniciusdoimo.template.api.dto.request.RequestUpdateUserDTO;
-import com.viniciusdoimo.template.api.dto.response.ResponseUserDTO;
+import com.viniciusdoimo.template.api.dto.request.RequestUserByIdDTO;
 import com.viniciusdoimo.template.api.dto.response.ResponseToStringDTO;
+import com.viniciusdoimo.template.api.dto.response.ResponseUserDTO;
 import com.viniciusdoimo.template.api.model.User;
 import com.viniciusdoimo.template.api.repositories.UserRepository;
 import com.viniciusdoimo.template.api.response.Response;
