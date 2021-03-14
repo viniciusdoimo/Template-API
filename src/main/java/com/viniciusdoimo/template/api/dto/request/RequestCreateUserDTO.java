@@ -1,10 +1,11 @@
 package com.viniciusdoimo.template.api.dto.request;
 
-import com.sun.xml.internal.ws.developer.SchemaValidation;
 import com.viniciusdoimo.template.api.model.User;
 import com.viniciusdoimo.template.api.utils.PasswordUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -20,7 +21,7 @@ import java.util.Date;
  */
 @Data
 @AllArgsConstructor
-@SchemaValidation
+@NoArgsConstructor
 public class RequestCreateUserDTO {
 
     @NotNull()

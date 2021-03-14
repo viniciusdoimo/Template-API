@@ -6,6 +6,7 @@ import com.viniciusdoimo.template.api.utils.PasswordUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -25,6 +26,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ActiveProfiles("test")
 public class UserRepositoryTest {
     private User user;
+    private static final String URL = "/user";
+    private static final Long ID = 1L;
+    private static final String NAME = "Vinicius";
+    private static final String SURNAME = "Doimo";
+    private static final String EMAIL = "vinicius.rodrigues.doimo@gmail.com";
+    private static final String CPF = "123.456.789-10";
+    private static final String PASSWORD = "12345678";
 
     @Autowired
     UserRepository repository;
@@ -32,12 +40,16 @@ public class UserRepositoryTest {
     @BeforeEach
     void setUp() {
         repository.deleteAllInBatch();
-        this.user = repository.save(getUserInstance());
+        this.user = repository.save(
+                new User(NAME, SURNAME, EMAIL, CPF, PASSWORD,new Date(),new Date())
+        );
     }
 
     @Test
     public void testSave() {
-        User persistenceResponse = repository.save(getUserInstance());
+        User persistenceResponse = repository.save(
+                new User(NAME, SURNAME, EMAIL, CPF, PASSWORD, new Date(), new Date())
+        );
         assertNotNull(persistenceResponse);
     }
 
@@ -48,10 +60,12 @@ public class UserRepositoryTest {
 
     @Test
     public void testUpdate() {
-        assertEquals(this.user, repository.findById(this.user.getId()).get());
+        Optional<User> userOptional = repository.findById(this.user.getId());
+        assertEquals(this.user, userOptional.get());
+        User user = userOptional.get();
         user.setSurname("Rodrigues Doimo");
         repository.save(user);
-        assertNotNull(user.getId());
+        assertEquals(user.getSurname(), repository.findById(this.user.getId()).get().getSurname());
     }
 
     @Test
