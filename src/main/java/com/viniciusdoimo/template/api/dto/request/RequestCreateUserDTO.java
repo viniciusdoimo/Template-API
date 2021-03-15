@@ -1,6 +1,5 @@
 package com.viniciusdoimo.template.api.dto.request;
 
-import com.sun.xml.internal.ws.developer.SchemaValidation;
 import com.viniciusdoimo.template.api.model.User;
 import com.viniciusdoimo.template.api.utils.PasswordUtils;
 import lombok.AllArgsConstructor;
@@ -20,7 +19,6 @@ import java.util.Date;
  */
 @Data
 @AllArgsConstructor
-@SchemaValidation
 public class RequestCreateUserDTO {
 
     @NotNull()
