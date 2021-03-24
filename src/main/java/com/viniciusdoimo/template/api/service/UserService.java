@@ -26,8 +26,11 @@ public class UserService {
 	@Autowired
 	private UserDAO userDAO;
 
-	public Response<ResponseUserDTO> createUser(RequestCreateUserDTO request){
+	public Response<ResponseUserDTO> createUser(RequestCreateUserDTO request) throws Exception {
 		Response<ResponseUserDTO> response = new Response<>();
+		if (userDAO.existsByCpf(request.getCpf())){
+			throw new Exception("there is already a user linked to this cpf");
+		}
 		User user = request.parseUser();
 		response.setData(new ResponseUserDTO(userDAO.create(user)));
 		return response;

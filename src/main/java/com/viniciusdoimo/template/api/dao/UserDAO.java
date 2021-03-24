@@ -21,6 +21,10 @@ public class UserDAO implements GenericDao<User, Long> {
     @Autowired
     UserRepository repository;
 
+    public boolean existsByCpf(String cpf) {
+        return repository.existsByCpf(cpf);
+    }
+
     @Override
     public List<User> findAll() {
         return null;
