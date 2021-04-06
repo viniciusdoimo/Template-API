@@ -2,7 +2,7 @@ package com.viniciusdoimo.template.api.service;
 
 import com.viniciusdoimo.template.api.dao.UserDAO;
 import com.viniciusdoimo.template.api.model.User;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
@@ -11,6 +11,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  *
@@ -31,36 +34,39 @@ public class UserServiceTest {
     @MockBean
     UserDAO dao;
 
-//    @Autowired
-//    UserService service;
-
-    @BeforeEach
-    void setUp() {
-        BDDMockito.given(dao.create(Mockito.any(User.class))).willReturn(new User(ID, NAME, SURNAME, EMAIL, CPF, PASSWORD, new Date(), new Date()));
-
-    }
-
+    @Test
     void testCreateUser() {
-        Mockito.when(dao.create(Mockito.any(User.class))).thenReturn(getUserInstance());
-
-        //Execução
-
-        //Verificação
-
+        BDDMockito.given(dao.create(Mockito.any(User.class))).willReturn(getUserInstance());
+        assertEquals(ID, dao.create(new User(ID, NAME, SURNAME, EMAIL, CPF, PASSWORD, new Date(), new Date())).getId());
     }
 
-//    @Test
-//    void criarException() {
-//        BDDMockito.given(dao.create(Mockito.any(User.class))).willReturn(new User(ID, NAME, SURNAME, EMAIL, CPF, PASSWORD, new Date(), new Date()));
-//
-//        User uder = dao.create(new User(null, NAME, SURNAME, EMAIL, CPF, PASSWORD, new Date(), new Date()));
-//
-//        assertThrows(Exception.class, ()-> dao.create(new User(null, NAME, SURNAME, EMAIL, CPF, PASSWORD, new Date(), new Date())));
-//
-//    }
+    @Test
+    void testFindById() throws Exception {
+        BDDMockito.given(dao.findById(ID)).willReturn(getUserInstance());
+        assertEquals(ID, dao.findById(ID).getId());
+    }
 
-    private User getUserInstance() {
+    @Test
+    void testUpdateUser() throws Exception {
+        BDDMockito.given(dao.findById(ID)).willReturn(getUserInstance());
+        assertEquals(ID, dao.findById(ID).getId());
+        dao.update(new User(ID, NAME, "Rodrigues Doimo", EMAIL, CPF, PASSWORD, new Date(), new Date()));
+        BDDMockito.given(dao.findById(ID)).willReturn(new User(ID, NAME, "Rodrigues Doimo", EMAIL, CPF, PASSWORD, new Date(), new Date()));
+        assertEquals("Rodrigues Doimo", dao.findById(ID).getSurname());
+    }
+
+    @Test
+    void testDeleteUser() throws Exception {
+        BDDMockito.given(dao.findById(ID)).willReturn(getUserInstance());
+        assertEquals(ID, dao.findById(ID).getId());
+        dao.delete(new User(ID, NAME, SURNAME, EMAIL, CPF, PASSWORD, new Date(), new Date()));
+        BDDMockito.given(dao.findById(ID)).willReturn(null);
+        assertNull(dao.findById(ID));
+    }
+
+    private static User getUserInstance() {
         return new User(
+                ID,
                 NAME,
                 SURNAME,
                 EMAIL,
